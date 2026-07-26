@@ -1,33 +1,599 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Todo List</title>
+  <title>UP Corporations | Next-Generation Software & Digital Solutions</title>
+  <meta name="description" content="UP Corporations delivers practical, affordable, and scalable software solutions including UPShop Enterprise POS, cloud infrastructure, and custom application development." />
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 
 <body>
-  <div class="app">
-    <h1>My Todo List</h1>
+  <!-- Header / Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+        </div>
+        <span>UP <span style="color: #38bdf8;">CORPORATIONS</span></span>
+      </a>
 
-    <form id="todo-form">
-      <input type="text" id="todo-input" placeholder="What needs doing?" autocomplete="off" />
-      <button type="submit">Add</button>
-      <button type="submit"> useless </button>
-    </form>
+      <ul class="nav-links">
+        <li><a href="#overview" class="nav-link">Overview</a></li>
+        <li><a href="#showcase" class="nav-link">Software Suite</a></li>
+        <li><a href="#services" class="nav-link">Services</a></li>
+        <li><a href="#calculator" class="nav-link">ROI Calculator</a></li>
+        <li><a href="#about" class="nav-link">About & Founder</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
 
-    <ul id="todo-list"></ul>
-  </div>
+      <div class="nav-actions">
+        <div class="status-badge">
+          <div class="pulse-dot"></div>
+          <span>Systems Online</span>
+        </div>
+        <a href="#contact" class="btn btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.88rem;">
+          Request Demo
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="overview" class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="section-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Enterprise Tech Engineering
+        </div>
+        <h1 class="hero-title">
+          Empowering Tomorrow's Enterprises Through <span class="gradient-text">Next-Gen Software</span>
+        </h1>
+        <p class="hero-subtitle">
+          UP Corporations designs and engineers high-performance digital ecosystems, enterprise point-of-sale platforms, and custom software systems crafted for extreme scalability and operational growth.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#showcase" class="btn btn-glow">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            Explore UPShop Simulator
+          </a>
+          <a href="#contact" class="btn btn-outline">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            Schedule Technical Consultation
+          </a>
+        </div>
+
+        <div class="hero-stats glass-panel">
+          <div class="stat-item">
+            <div class="stat-number">99.99%</div>
+            <div class="stat-label">System Uptime Architecture</div>
+          </div>
+          <div class="stat-item" style="border-left: 1px solid var(--border-glass); border-right: 1px solid var(--border-glass);">
+            <div class="stat-number">UPShop v3.1</div>
+            <div class="stat-label">Flagship POS Suite</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Client Scalability Focus</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Software Suite Interactive Showcase -->
+  <section id="showcase" class="section-padding">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div class="section-tag">Flagship Product</div>
+        <h2 class="section-title">UPShop Enterprise <span class="gradient-text-cyan">Console & POS Suite</span></h2>
+        <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+          An advanced, multi-terminal business management platform for inventory tracking, real-time revenue analytics, and secure store management. Test drive the live interactive interface below.
+        </p>
+      </div>
+
+      <!-- Simulator Wrapper -->
+      <div class="glass-panel simulator-wrapper">
+        <div class="simulator-header">
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <div class="window-dots">
+              <div class="dot dot-red"></div>
+              <div class="dot dot-yellow"></div>
+              <div class="dot dot-green"></div>
+            </div>
+            <span style="font-size: 0.85rem; font-family: monospace; color: #94a3b8;">upshop-console.up-corporations.internal</span>
+          </div>
+
+          <div class="simulator-tabs">
+            <button class="sim-tab active" data-tab="login">🔒 Login Access</button>
+            <button class="sim-tab" data-tab="dash">💻 Console Dashboard</button>
+            <button class="sim-tab" data-tab="pos">🛒 POS Terminal</button>
+            <button class="sim-tab" data-tab="bi">📈 BI & Targets</button>
+          </div>
+        </div>
+
+        <div class="simulator-screen">
+          <!-- View 1: Login Screen -->
+          <div id="view-login" class="sim-view active">
+            <div class="login-sim-card">
+              <div style="font-size: 1.8rem; font-weight: 800; color: #38bdf8; font-family: var(--font-heading); margin-bottom: 0.2rem;">
+                UPSHOP
+              </div>
+              <div style="font-size: 1.1rem; font-weight: 700; color: white; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+                LOGIN
+              </div>
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.4rem; color: #38bdf8; font-size: 0.8rem; margin-bottom: 1.5rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Secure System Access
+              </div>
+
+              <div style="text-align: left;">
+                <label class="form-label" style="font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;">Username</label>
+                <input type="text" class="sim-input" value="admin_terminal" readonly />
+
+                <label class="form-label" style="font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;">Password</label>
+                <input type="password" class="sim-input" value="••••••••" readonly />
+
+                <button class="btn btn-primary" style="width: 100%; margin-top: 0.5rem; justify-content: center;" onclick="document.querySelector('[data-tab=\'dash\']').click();">
+                  LOGIN TO CONSOLE
+                </button>
+
+                <div style="margin-top: 1.25rem; font-size: 0.8rem; color: #94a3b8;">
+                  First time here? <span style="color: #38bdf8; font-weight: 600; cursor: pointer;">Register Business</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 2: Console Dashboard Screen -->
+          <div id="view-dash" class="sim-view">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <span style="font-weight: 700; color: #38bdf8; font-family: var(--font-heading);">UPSHOP CONSOLE</span>
+                <span class="status-badge" style="font-size: 0.7rem;">System Online</span>
+              </div>
+              <div style="font-size: 0.8rem; color: #94a3b8; font-family: monospace;" class="live-clock">
+                Loading live clock...
+              </div>
+            </div>
+
+            <div class="dash-banner">
+              <div style="font-size: 0.75rem; font-weight: 700; color: #fbbf24; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.25rem;">ACTIVE TERMINAL</div>
+              <h3 style="font-size: 2.2rem; font-weight: 800; color: white;">UPSHOP Enterprise</h3>
+              <div style="display: flex; gap: 1.5rem; margin-top: 1rem; font-size: 0.85rem; color: #cbd5e1;">
+                <div>📍 Location: <span style="color: #38bdf8; font-weight: 600;">Main Store Terminal</span></div>
+                <div>👤 Agent: <span style="color: #38bdf8; font-weight: 600;">Matovu Shafik</span></div>
+                <div>📅 Period: <span style="color: #fbbf24; font-weight: 600;">Week 1 Operational</span></div>
+              </div>
+            </div>
+
+            <div class="dash-stats-grid">
+              <div class="dash-stat-card">
+                <div>
+                  <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Revenue in Cash</div>
+                  <div style="font-size: 1.6rem; font-weight: 800; color: white; margin-top: 0.25rem;">Shs <span style="color: #38bdf8;">0</span></div>
+                  <div style="font-size: 0.7rem; color: #64748b; margin-top: 0.2rem;">Cash sales & payments received</div>
+                </div>
+                <div style="font-size: 1.5rem; color: #38bdf8;">💵</div>
+              </div>
+
+              <div class="dash-stat-card">
+                <div>
+                  <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Revenue in Credit</div>
+                  <div style="font-size: 1.6rem; font-weight: 800; color: white; margin-top: 0.25rem;">Shs <span style="color: #f59e0b;">0</span></div>
+                  <div style="font-size: 0.7rem; color: #64748b; margin-top: 0.2rem;">Income not paid yet</div>
+                </div>
+                <div style="font-size: 1.5rem; color: #f59e0b;">💳</div>
+              </div>
+
+              <div class="dash-stat-card">
+                <div>
+                  <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Progress Rate</div>
+                  <div style="font-size: 1.6rem; font-weight: 800; color: #34d399; margin-top: 0.25rem;">0%</div>
+                  <div style="font-size: 0.7rem; color: #64748b; margin-top: 0.2rem;">Of weekly target reached</div>
+                </div>
+                <div style="font-size: 1.5rem; color: #34d399;">📊</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 3: POS Terminal Screen -->
+          <div id="view-pos" class="sim-view">
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem;">
+              <div>
+                <h4 style="font-size: 1rem; color: #38bdf8; margin-bottom: 0.75rem;">Interactive Item Catalog (Click item to add to terminal)</h4>
+                <div id="pos-items-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                  <!-- Dynamic JS Rendered Items -->
+                </div>
+              </div>
+
+              <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem;">
+                <h4 style="font-size: 1rem; color: white; margin-bottom: 0.75rem;">Terminal Register Cart</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #64748b; font-size: 0.75rem; text-align: left;">
+                      <th style="padding-bottom: 0.5rem;">ITEM</th>
+                      <th style="padding-bottom: 0.5rem;">QTY</th>
+                      <th style="padding-bottom: 0.5rem;">PRICE</th>
+                      <th style="padding-bottom: 0.5rem; text-align: right;">DEL</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pos-cart-body">
+                    <!-- Dynamic Cart Body -->
+                  </tbody>
+                </table>
+
+                <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between;">
+                  <span style="font-weight: 700; color: white;">TOTAL:</span>
+                  <span id="pos-subtotal" style="font-size: 1.2rem; font-weight: 800; color: #38bdf8;">$450.00</span>
+                </div>
+
+                <button id="pos-checkout-btn" class="btn btn-glow" style="width: 100%; margin-top: 1rem; font-size: 0.85rem; justify-content: center;">
+                  Process Transaction
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- View 4: BI & Targets Screen -->
+          <div id="view-bi" class="sim-view">
+            <h4 style="font-size: 1.1rem; color: white; margin-bottom: 1rem;">Business Intelligence & Growth Dashboard</h4>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;">
+              <div class="glass-card">
+                <div style="font-size: 0.85rem; color: #94a3b8;">Sales Growth Index</div>
+                <div style="font-size: 1.8rem; font-weight: 800; color: #38bdf8; margin: 0.5rem 0;">+34.2%</div>
+                <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                  <div style="width: 78%; height: 100%; background: linear-gradient(90deg, #38bdf8, #3b82f6);"></div>
+                </div>
+              </div>
+
+              <div class="glass-card">
+                <div style="font-size: 0.85rem; color: #94a3b8;">Stock Turnover Rate</div>
+                <div style="font-size: 1.8rem; font-weight: 800; color: #34d399; margin: 0.5rem 0;">8.4x / Mo</div>
+                <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                  <div style="width: 84%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Corporate Services -->
+  <section id="services" class="section-padding" style="background: rgba(10, 15, 28, 0.4);">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-tag">Engineering Portfolio</div>
+        <h2 class="section-title">High-Impact <span class="gradient-text">Digital Services</span></h2>
+        <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+          UP Corporations provides complete end-to-end software development, custom application builds, and digital transformation for modern enterprises.
+        </p>
+      </div>
+
+      <div class="services-grid">
+        <div class="glass-card">
+          <div class="service-icon-box">💻</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Custom Software & Application Development</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Full-stack web applications, desktop cross-platform tools (Tauri / Electron), and native mobile apps tailored to business specs.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="service-icon-box">🛒</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Enterprise POS & Inventory Systems</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Scalable point-of-sale solutions like UPShop Management designed for multi-location retail, inventory automation, and cashier control.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="service-icon-box">☁️</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Cloud Infrastructure & API Architecture</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Secure REST/GraphQL API backends, cloud database integration, data encryption, and high-frequency transaction syncing.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="service-icon-box">📈</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">BI & Data Analytics Dashboards</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Real-time metric visualization, automated sales reporting, margin calculation, and predictive target tracking.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="service-icon-box">🛠️</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">System Customization & Maintenance</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Continuous maintenance, feature requests, system upgrades, software installation, and direct technical support.
+          </p>
+        </div>
+
+        <div class="glass-card">
+          <div class="service-icon-box">⚡</div>
+          <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Digital Business Transformation</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">
+            Empowering traditional businesses with modern digital tools to streamline operations, cut overhead, and accelerate growth.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive ROI Calculator -->
+  <section id="calculator" class="section-padding">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <div class="section-tag">Interactive Calculator</div>
+        <h2 class="section-title">Estimate Your <span class="gradient-text-amber">Efficiency Growth</span></h2>
+        <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+          See how much time and operational revenue your enterprise gains by deploying UP Corporations software solutions.
+        </p>
+      </div>
+
+      <div class="glass-panel calc-box">
+        <div>
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Daily Transactions / Sales</span>
+              <span id="val-transactions" style="color: #38bdf8;">150</span>
+            </div>
+            <input type="range" id="calc-transactions" class="calc-slider" min="10" max="1000" value="150" />
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Active Outlets / Stores</span>
+              <span id="val-outlets" style="color: #38bdf8;">2</span>
+            </div>
+            <input type="range" id="calc-outlets" class="calc-slider" min="1" max="20" value="2" />
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span>Staff / Cashier Members</span>
+              <span id="val-staff" style="color: #38bdf8;">5</span>
+            </div>
+            <input type="range" id="calc-staff" class="calc-slider" min="1" max="50" value="5" />
+          </div>
+        </div>
+
+        <div class="roi-result-card">
+          <div style="font-size: 0.9rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Estimated Time Saved</div>
+          <div id="roi-hours-saved" class="roi-big-num">144 hrs/mo</div>
+
+          <div style="display: flex; justify-content: space-around; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">Est. Monthly Growth</div>
+              <div id="roi-rev-growth" style="font-size: 1.25rem; font-weight: 800; color: #38bdf8;">$22,500</div>
+            </div>
+            <div>
+              <div style="font-size: 0.75rem; color: #94a3b8;">Efficiency Rate</div>
+              <div id="roi-efficiency" style="font-size: 1.25rem; font-weight: 800; color: #fbbf24;">+83%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About & Founder Spotlight -->
+  <section id="about" class="section-padding" style="background: rgba(10, 15, 28, 0.4);">
+    <div class="container">
+      <div class="about-grid">
+        <div class="glass-panel founder-card">
+          <div class="founder-avatar">MS</div>
+          <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">FOUNDER & LEAD ARCHITECT</div>
+          <h3 style="font-size: 1.8rem; font-weight: 800; color: white; margin: 0.2rem 0 1rem 0;">Matovu Shafik</h3>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.7;">
+            Designed and developed with the vision of delivering practical, affordable, and scalable digital solutions for businesses of all sizes. The mission is to empower entrepreneurs by providing modern technology that streamlines operations, enhances efficiency, and supports sustainable business growth.
+          </p>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <div class="status-badge" style="background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.3); color: #38bdf8;">
+              Software Architecture
+            </div>
+            <div class="status-badge" style="background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); color: #818cf8;">
+              Enterprise Systems
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-tag">Corporate Philosophy</div>
+          <h2 class="section-title">Built for Performance, <span class="gradient-text-cyan">Engineered for Growth</span></h2>
+          <p style="color: var(--text-muted); font-size: 1.05rem; margin-bottom: 1.5rem;">
+            At UP Corporations, we believe that software should be intuitive, dependable, and capable of growing alongside your enterprise.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: flex-start; gap: 1rem;">
+              <div style="font-size: 1.5rem; color: #38bdf8;">🎯</div>
+              <div>
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: white;">Practical & Scalable Engineering</h4>
+                <p style="font-size: 0.88rem; color: #94a3b8;">No bloated code—only sleek, highly efficient architectures designed for maximum responsiveness.</p>
+              </div>
+            </div>
+
+            <div class="glass-card" style="padding: 1.25rem; display: flex; align-items: flex-start; gap: 1rem;">
+              <div style="font-size: 1.5rem; color: #34d399;">🛡️</div>
+              <div>
+                <h4 style="font-size: 1.05rem; font-weight: 700; color: white;">Enterprise-Grade Data Security</h4>
+                <p style="font-size: 0.88rem; color: #94a3b8;">Robust role access controls and isolated database integrity protecting critical financial records.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact & Consultation Section -->
+  <section id="contact" class="section-padding">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 3rem;">
+        <div class="section-tag">Get in Touch</div>
+        <h2 class="section-title">Connect with <span class="gradient-text">UP Corporations</span></h2>
+        <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+          For technical support, software installation, customization, feature requests, or general business inquiries, please reach out directly below.
+        </p>
+      </div>
+
+      <div class="glass-panel contact-grid" style="padding: 2.5rem;">
+        <div>
+          <h3 style="font-size: 1.4rem; font-weight: 700; color: white; margin-bottom: 1.5rem;">Direct Contact Details</h3>
+
+          <div class="contact-info-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Primary Phone</div>
+              <a href="tel:+256709889228" style="color: white; font-weight: 700; text-decoration: none; font-size: 1.05rem;">+256 709 889 228</a>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-icon">📱</div>
+            <div>
+              <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Alternative Contact</div>
+              <a href="tel:+256767129079" style="color: white; font-weight: 700; text-decoration: none; font-size: 1.05rem;">+256 767 129 079</a>
+            </div>
+          </div>
+
+          <div class="contact-info-item">
+            <div class="contact-icon">✉️</div>
+            <div>
+              <div style="font-size: 0.8rem; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Official Email</div>
+              <a href="mailto:shafikmatovuv2@gmail.com" style="color: #38bdf8; font-weight: 700; text-decoration: none; font-size: 1.05rem;">shafikmatovuv2@gmail.com</a>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08);">
+            <div style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+              Your feedback, suggestions, and recommendations are highly appreciated and play an important role in improving future versions of UP Corporations software products.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <form id="contact-form">
+            <div class="form-group">
+              <label class="form-label" for="form-name">Your Full Name</label>
+              <input type="text" id="form-name" class="form-input" placeholder="e.g. John Doe" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-email">Business Email</label>
+              <input type="email" id="form-email" class="form-input" placeholder="john@enterprise.com" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-inquiry">Inquiry Type</label>
+              <select id="form-inquiry" class="form-input" style="background: #0f172a;" required>
+                <option value="UPShop Demo Request">UPShop POS Demo Request</option>
+                <option value="Custom Software Build">Custom Software Build</option>
+                <option value="Technical Support">Technical Support & Maintenance</option>
+                <option value="Partnership">Partnership & Inquiry</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="form-msg">Project Specifications / Message</label>
+              <textarea id="form-msg" class="form-textarea" rows="4" placeholder="Describe your business needs or feature request..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-glow" style="width: 100%; justify-content: center;">
+              Dispatch Message to UP Corporations
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="#" class="brand-logo" style="margin-bottom: 1rem;">
+            <div class="brand-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <span>UP <span style="color: #38bdf8;">CORPORATIONS</span></span>
+          </a>
+          <p style="color: var(--text-muted); font-size: 0.88rem; max-width: 320px; line-height: 1.6;">
+            Delivering practical, affordable, and scalable digital solutions for modern businesses worldwide.
+          </p>
+        </div>
+
+        <div>
+          <h5 style="color: white; font-size: 0.95rem; margin-bottom: 1rem;">Software Suite</h5>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.85rem;">
+            <li><a href="#showcase" style="color: var(--text-muted); text-decoration: none;">UPShop Enterprise Management</a></li>
+            <li><a href="#showcase" style="color: var(--text-muted); text-decoration: none;">POS & Terminal Register</a></li>
+            <li><a href="#showcase" style="color: var(--text-muted); text-decoration: none;">Business Intelligence Engine</a></li>
+            <li><a href="#services" style="color: var(--text-muted); text-decoration: none;">Custom App Development</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 style="color: white; font-size: 0.95rem; margin-bottom: 1rem;">Company</h5>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.85rem;">
+            <li><a href="#about" style="color: var(--text-muted); text-decoration: none;">About UP Corporations</a></li>
+            <li><a href="#about" style="color: var(--text-muted); text-decoration: none;">Founder Spotlight</a></li>
+            <li><a href="#calculator" style="color: var(--text-muted); text-decoration: none;">ROI Estimator</a></li>
+            <li><a href="#contact" style="color: var(--text-muted); text-decoration: none;">Contact Channels</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 style="color: white; font-size: 0.95rem; margin-bottom: 1rem;">Direct Contact</h5>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.85rem; color: var(--text-muted);">
+            <li>Primary: +256 709 889 228</li>
+            <li>Alt: +256 767 129 079</li>
+            <li>Email: shafikmatovuv2@gmail.com</li>
+            <li>Developer: Matovu Shafik</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 UP Corporations. All Rights Reserved.</div>
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <div class="pulse-dot"></div>
+          <span>All Core Systems Operational</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="/src/main.js"></script>
-  <div>
-    <h5>this is only in the second commit</h5>
-    <h2> this is a thirsd commit, i deleted the second one</h2>
-    <br>
-    <p>this is the fourth commit and it is working</p>
-  </div>
 </body>
 
 </html>
