@@ -26,20 +26,24 @@
       <ul class="nav-links">
         <li><a href="#overview" class="nav-link">Overview</a></li>
         <li><a href="#showcase" class="nav-link">Software Suite</a></li>
+        <li><a href="#apikeys" class="nav-link">API Keys</a></li>
         <li><a href="#services" class="nav-link">Services</a></li>
         <li><a href="#calculator" class="nav-link">ROI Calculator</a></li>
         <li><a href="#about" class="nav-link">About & Founder</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
 
-      <div class="nav-actions">
+      <div class="nav-actions" id="user-auth-nav">
         <div class="status-badge">
           <div class="pulse-dot"></div>
           <span>Systems Online</span>
         </div>
-        <a href="#contact" class="btn btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.88rem;">
-          Request Demo
-        </a>
+        <button id="nav-signin-btn" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.88rem;">
+          Sign In
+        </button>
+        <button id="nav-signup-btn" class="btn btn-primary" style="padding: 0.5rem 1.1rem; font-size: 0.88rem;">
+          Sign Up
+        </button>
       </div>
     </div>
   </header>
@@ -275,6 +279,83 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- API Keys & Developer Integration Access -->
+  <section id="apikeys" class="section-padding">
+    <div class="container">
+      <div style="text-align: center; margin-bottom: 2.5rem;">
+        <div class="section-tag" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(52, 211, 153, 0.3);">
+          ⚡ Developer Ecosystem & API Access
+        </div>
+        <h2 class="section-title">Official System <span class="gradient-text-cyan">API Credentials</span></h2>
+        <p class="section-desc" style="margin-left: auto; margin-right: auto;">
+          System API keys are managed securely via the Admin Dashboard. Log in as Admin to add, edit, enable, or copy active API credentials.
+        </p>
+      </div>
+
+      <div class="glass-panel" style="max-width: 850px; margin: 0 auto; padding: 2rem; border-left: 4px solid #10b981;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(52, 211, 153, 0.4); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+              🔑
+            </div>
+            <div>
+              <h3 style="font-size: 1.1rem; font-weight: 800; color: white;">Official JAHWI AI & Enterprise Gateway Keys</h3>
+              <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.1rem;">Secure API Key Management Suite</div>
+            </div>
+          </div>
+          <div class="status-badge" id="public-api-status-badge" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(52, 211, 153, 0.3); color: #34d399;">
+            <div class="pulse-dot" style="background: #34d399;"></div>
+            <span id="public-api-status-text">API Vault: Ready</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem;">
+          <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
+            Active Primary API Key
+          </label>
+
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <div style="position: relative; flex: 1; min-width: 260px;">
+              <input 
+                type="text" 
+                id="api-key-input" 
+                value="Log in as Admin to view & manage active API keys" 
+                readonly 
+                style="width: 100%; background: #0b0f19; border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8; font-family: monospace; font-size: 0.92rem; font-weight: 600; padding: 0.8rem 1rem; border-radius: 10px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);"
+              />
+            </div>
+            
+            <button 
+              id="copy-api-key-btn" 
+              class="btn btn-glow" 
+              style="padding: 0.8rem 1.4rem; font-size: 0.88rem; justify-content: center; background: linear-gradient(135deg, #10b981, #059669); border: none;"
+            >
+              📋 Copy Active Key
+            </button>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.78rem; color: #94a3b8;">
+            <span>Engine: <strong>Gemini 2.0 / Enterprise Gateway</strong></span>
+            <span>Security: <strong>Admin Controlled Vault</strong></span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+          <div style="font-size: 0.83rem; color: #94a3b8; line-height: 1.5; flex: 1; min-width: 250px;">
+            💡 <strong>Admin Access:</strong> Sign in with an Admin account (`admin@upcorp.com`) to add custom API keys, enable/disable services, and manage developer permissions.
+          </div>
+          <button 
+            id="open-admin-vault-btn" 
+            class="btn btn-outline" 
+            style="font-size: 0.85rem; padding: 0.65rem 1.2rem; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;"
+          >
+            🔐 Open Admin API Manager
+          </button>
         </div>
       </div>
     </div>
@@ -592,6 +673,225 @@
       </div>
     </div>
   </footer>
+
+  <!-- ==========================================================================
+       Authentication Modal (Sign In / Sign Up)
+       ========================================================================== -->
+  <div id="auth-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">
+          <span>⚡ UP Corporations Auth Portal</span>
+        </div>
+        <button class="modal-close" id="auth-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="auth-nav">
+          <button class="auth-tab-btn active" id="tab-signin-btn">Sign In</button>
+          <button class="auth-tab-btn" id="tab-signup-btn">Sign Up</button>
+        </div>
+
+        <form id="auth-form">
+          <div class="role-pills">
+            <div class="role-pill active" data-role="customer">👤 Customer</div>
+            <div class="role-pill" data-role="admin">🔑 System Admin</div>
+          </div>
+
+          <div class="form-group" id="signup-fullname-group" style="display: none;">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="auth-fullname" class="form-input" placeholder="e.g. Alex Matovu" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="auth-email" class="form-input" placeholder="user@upcorp.com" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required />
+          </div>
+
+          <button type="submit" id="auth-submit-btn" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 0.85rem;">
+            Sign In to Account
+          </button>
+        </form>
+
+        <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-glass); text-align: center;">
+          <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 0.6rem;">Quick Demo Fill:</div>
+          <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+            <button id="fill-admin-demo" class="btn btn-outline btn-sm">🔑 Fill Admin Demo</button>
+            <button id="fill-customer-demo" class="btn btn-outline btn-sm">👤 Fill Customer Demo</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Customer Dashboard Modal
+       ========================================================================== -->
+  <div id="customer-dashboard-modal" class="modal-backdrop">
+    <div class="modal-card wide">
+      <div class="modal-header">
+        <div class="modal-title">
+          <div class="user-avatar">👤</div>
+          <div>
+            <span id="cust-dash-name">Customer Portal</span>
+            <div style="font-size: 0.75rem; color: #94a3b8; font-weight: 400;" id="cust-dash-email">customer@upcorp.com</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+          <button id="cust-logout-btn" class="btn btn-danger btn-sm">Logout</button>
+          <button class="modal-close" id="cust-dash-close">✕</button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+          <div class="glass-card">
+            <div style="font-size: 0.8rem; color: #94a3b8;">Account Tier</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #38bdf8; margin-top: 0.2rem;">Enterprise Client</div>
+            <div style="font-size: 0.75rem; color: #34d399; margin-top: 0.3rem;">✓ Active Subscription</div>
+          </div>
+          <div class="glass-card">
+            <div style="font-size: 0.8rem; color: #94a3b8;">API Quota</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #f59e0b; margin-top: 0.2rem;">Unlimited Calls</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.3rem;">Enterprise Rate Limit</div>
+          </div>
+          <div class="glass-card">
+            <div style="font-size: 0.8rem; color: #94a3b8;">Assigned Solutions</div>
+            <div style="font-size: 1.4rem; font-weight: 800; color: #10b981; margin-top: 0.2rem;">3 Applications</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.3rem;">UPshop POS, JAHWI AI</div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: white;">My API Keys & Access Requests</h3>
+        <div class="glass-panel" style="padding: 1.25rem; margin-bottom: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div>
+              <strong style="color: white;">Request Dedicated Production Key</strong>
+              <div style="font-size: 0.8rem; color: #94a3b8;">Generate client-specific API key for custom integrations</div>
+            </div>
+            <button id="cust-request-key-btn" class="btn btn-glow btn-sm">Request Key</button>
+          </div>
+          <div id="cust-keys-list" style="font-size: 0.85rem; color: #94a3b8; border-top: 1px solid var(--border-glass); padding-top: 0.75rem;">
+            <em>No custom client keys generated yet. Click "Request Key" to apply.</em>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: white;">Software Suite Quick Launch</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+          <a href="#showcase" class="btn btn-outline" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>💻</span> UPshop POS Console
+          </a>
+          <a href="#showcase" class="btn btn-outline" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>🤖</span> JAHWI AI Assistant
+          </a>
+          <a href="#calculator" class="btn btn-outline" style="justify-content: flex-start; gap: 0.75rem;">
+            <span>📊</span> ROI Calculator
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Admin Dashboard Modal (API Key Management Suite & User Control)
+       ========================================================================== -->
+  <div id="admin-dashboard-modal" class="modal-backdrop">
+    <div class="modal-card wide">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(245, 158, 11, 0.3);">
+        <div class="modal-title">
+          <div class="user-avatar admin-badge-icon">👑</div>
+          <div>
+            <span>Admin Command Center</span>
+            <div style="font-size: 0.75rem; color: #f59e0b; font-weight: 500;" id="admin-dash-email">admin@upcorp.com</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+          <button id="admin-logout-btn" class="btn btn-danger btn-sm">Logout</button>
+          <button class="modal-close" id="admin-dash-close">✕</button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Section: Add New API Key Form -->
+        <div class="glass-panel" style="padding: 1.5rem; border-left: 4px solid #f59e0b; margin-bottom: 2rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>🔑 Add System API Key</span>
+          </h3>
+          <p style="font-size: 0.83rem; color: #94a3b8; margin-bottom: 1.25rem;">
+            Add new API credentials dynamically. Keys added here are immediately saved into the system vault and can be copied or configured anytime.
+          </p>
+
+          <form id="admin-add-key-form" style="display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: 0.75rem; align-items: end;">
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Service Name</label>
+              <input type="text" id="key-service-name" class="form-input" placeholder="e.g. Gemini AI Key" required style="padding: 0.6rem 0.8rem; font-size: 0.85rem;" />
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">Provider / Engine</label>
+              <input type="text" id="key-provider" class="form-input" placeholder="e.g. Google Cloud / UPshop" required style="padding: 0.6rem 0.8rem; font-size: 0.85rem;" />
+            </div>
+            <div>
+              <label class="form-label" style="font-size: 0.75rem;">API Key Value</label>
+              <input type="text" id="key-value" class="form-input" placeholder="Paste your API key here..." required style="padding: 0.6rem 0.8rem; font-size: 0.85rem; font-family: monospace;" />
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.2rem; font-size: 0.85rem; background: linear-gradient(135deg, #f59e0b, #d97706); border: none;">
+                ➕ Save API Key
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Section: Active API Keys Table -->
+        <h3 style="font-size: 1.1rem; color: white; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+          <span>Active API Key Vault</span>
+          <span style="font-size: 0.8rem; color: #94a3b8; font-weight: normal;" id="api-keys-count">0 Keys Configured</span>
+        </h3>
+
+        <div style="overflow-x: auto; margin-bottom: 2.5rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Provider</th>
+                <th>API Key</th>
+                <th>Status</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-api-keys-tbody">
+              <tr>
+                <td colspan="5" style="text-align: center; color: #64748b; padding: 1.5rem;">
+                  No API keys added yet. Use the form above to add your first API key!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Section: Registered Users & System Status -->
+        <h3 style="font-size: 1.1rem; color: white; margin-bottom: 0.75rem;">Registered Users & Roles</h3>
+        <div style="overflow-x: auto; margin-bottom: 1rem;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Joined</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>
