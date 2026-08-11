@@ -329,6 +329,43 @@ function saveStoredApiKeys(keys) {
   syncPublicApiKeyDisplay();
 }
 
+/* API Access Requests Storage & Logic */
+function getStoredApiRequests() {
+  const reqs = localStorage.getItem('up_api_requests');
+  if (reqs) return JSON.parse(reqs);
+
+  const defaultReqs = [
+    {
+      id: 'req_101',
+      userId: 'u2',
+      userName: 'Enterprise Client',
+      userEmail: 'customer@upcorp.com',
+      apiType: 'JAHWI AI Gateway (Gemini Pro Engine)',
+      status: 'approved',
+      requestedAt: '2026-08-08 14:30',
+      approvedKey: 'UP_KEY_JAHWI_8A91F03C7E'
+    },
+    {
+      id: 'req_102',
+      userId: 'u2',
+      userName: 'Enterprise Client',
+      userEmail: 'customer@upcorp.com',
+      apiType: 'UPShop Enterprise POS Sync API',
+      status: 'pending',
+      requestedAt: '2026-08-11 10:15',
+      approvedKey: null
+    }
+  ];
+  localStorage.setItem('up_api_requests', JSON.stringify(defaultReqs));
+  return defaultReqs;
+}
+
+function saveStoredApiRequests(reqs) {
+  localStorage.setItem('up_api_requests', JSON.stringify(reqs));
+  renderAdminApiRequestsTable();
+  renderCustomerRequestsList();
+}
+
 function syncPublicApiKeyDisplay() {
   const inputEl = document.getElementById('api-key-input');
   const statusText = document.getElementById('public-api-status-text');
@@ -439,6 +476,7 @@ function openAuthModal(mode = 'signin') {
 function initAuthSystem() {
   getStoredUsers();
   getStoredApiKeys();
+  getStoredApiRequests();
   updateNavAuthUI();
   syncPublicApiKeyDisplay();
 
@@ -602,7 +640,6 @@ function initAuthSystem() {
         createdAt: new Date().toISOString().split('T')[0]
       };
 
-      // Set previous keys to inactive if desired, or keep new as active
       keys.forEach(k => k.active = false);
       keys.unshift(newKey);
       saveStoredApiKeys(keys);
@@ -612,26 +649,46 @@ function initAuthSystem() {
     });
   }
 
-  // Customer Request Key Button
-  const custReqKeyBtn = document.getElementById('cust-request-key-btn');
-  if (custReqKeyBtn) {
-    custReqKeyBtn.addEventListener('click', () => {
+  // Customer Request API Access Form Submit
+  const custReqForm = document.getElementById('cust-request-api-form');
+  if (custReqForm) {
+    custReqForm.addEventListener('submit', (e) => {
+      e.preventDefault();
       const user = getCurrentUser();
-      const keysList = document.getElementById('cust-keys-list');
-      const newKeyVal = `CLIENT_${(user ? user.name : 'CUST').toUpperCase().replace(/\s+/g, '_')}_${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
-
-      if (keysList) {
-        keysList.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#090e1a; padding:0.75rem 1rem; border-radius:8px; border:1px solid rgba(56,189,248,0.3); margin-top:0.5rem;">
-            <div>
-              <strong style="color:white;">Dedicated Enterprise API Key</strong>
-              <div class="key-code" style="margin-top:0.25rem;">${newKeyVal}</div>
-            </div>
-            <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText('${newKeyVal}'); alert('Key copied!');">Copy</button>
-          </div>
-        `;
+      if (!user) {
+        showToast('Please sign in to request API access.');
+        return;
       }
-      showToast('New Dedicated Client API Key generated!');
+
+      const apiTypeSelect = document.getElementById('cust-api-type-select');
+      const selectedType = apiTypeSelect ? apiTypeSelect.value : 'Custom Webhook API';
+
+      const reqs = getStoredApiRequests();
+
+      // Check if user already requested this exact API type and it is pending
+      const existingPending = reqs.find(r => (r.userId === user.id || r.userEmail === user.email) && r.apiType === selectedType && r.status === 'pending');
+      if (existingPending) {
+        showToast(`You already have a pending request for ${selectedType}!`);
+        return;
+      }
+
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+      const newReq = {
+        id: 'req_' + Date.now(),
+        userId: user.id || 'u_' + Date.now(),
+        userName: user.name || user.email.split('@')[0],
+        userEmail: user.email,
+        apiType: selectedType,
+        status: 'pending',
+        requestedAt: nowStr,
+        approvedKey: null
+      };
+
+      reqs.unshift(newReq);
+      saveStoredApiRequests(reqs);
+
+      showToast(`Request for "${selectedType}" submitted successfully! Awaiting Admin Approval.`);
     });
   }
 }
@@ -643,7 +700,59 @@ function openCustomerDashboard() {
   document.getElementById('cust-dash-name').textContent = user.name || 'Customer Portal';
   document.getElementById('cust-dash-email').textContent = user.email;
 
+  renderCustomerRequestsList();
   openModal('customer-dashboard-modal');
+}
+
+function renderCustomerRequestsList() {
+  const user = getCurrentUser();
+  const keysList = document.getElementById('cust-keys-list');
+  if (!keysList || !user) return;
+
+  const reqs = getStoredApiRequests().filter(r => r.userId === user.id || r.userEmail === user.email);
+
+  if (reqs.length === 0) {
+    keysList.innerHTML = `
+      <div style="font-size: 0.85rem; color: #64748b; font-style: italic; padding: 0.5rem 0;">
+        No API access requests submitted yet. Select an API type above and click "Submit API Access Request".
+      </div>
+    `;
+    return;
+  }
+
+  keysList.innerHTML = reqs.map(r => {
+    let badgeHtml = '';
+    let keyDisplay = '';
+
+    if (r.status === 'approved') {
+      badgeHtml = `<span class="status-badge" style="background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.3); color:#34d399;">✓ Approved</span>`;
+      keyDisplay = `
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-top:0.5rem;">
+          <span class="key-code" style="font-size:0.85rem; color:#38bdf8;">${r.approvedKey}</span>
+          <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText('${r.approvedKey}'); window.showToast('API Key Copied!');" style="padding:0.25rem 0.6rem; font-size:0.75rem;">📋 Copy</button>
+        </div>
+      `;
+    } else if (r.status === 'rejected') {
+      badgeHtml = `<span class="status-badge" style="background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); color:#ef4444;">✕ Rejected</span>`;
+      keyDisplay = `<div style="font-size:0.78rem; color:#ef4444; margin-top:0.3rem;">Request declined by administrator. Contact support for details.</div>`;
+    } else {
+      badgeHtml = `<span class="status-badge" style="background:rgba(245,158,11,0.15); border-color:rgba(245,158,11,0.3); color:#f59e0b;">⏳ Pending Admin Approval</span>`;
+      keyDisplay = `<div style="font-size:0.78rem; color:#94a3b8; margin-top:0.3rem;">Requested on ${r.requestedAt} — Awaiting review in Admin Command Center</div>`;
+    }
+
+    return `
+      <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 0.9rem 1.1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+          <div>
+            <strong style="color:white; font-size:0.92rem;">${r.apiType}</strong>
+            <div style="font-size:0.75rem; color:#64748b;">Ref ID: ${r.id}</div>
+          </div>
+          <div>${badgeHtml}</div>
+        </div>
+        ${keyDisplay}
+      </div>
+    `;
+  }).join('');
 }
 
 function openAdminDashboard() {
@@ -654,10 +763,70 @@ function openAdminDashboard() {
   }
 
   document.getElementById('admin-dash-email').textContent = user.email;
+  renderAdminApiRequestsTable();
   renderAdminApiVault();
   renderAdminUsersTable();
 
   openModal('admin-dashboard-modal');
+}
+
+function renderAdminApiRequestsTable() {
+  const tbody = document.getElementById('admin-api-requests-tbody');
+  const countEl = document.getElementById('admin-pending-req-count');
+  if (!tbody) return;
+
+  const reqs = getStoredApiRequests();
+  const pendingCount = reqs.filter(r => r.status === 'pending').length;
+
+  if (countEl) countEl.textContent = `${pendingCount} Pending Approval`;
+
+  if (reqs.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align: center; color: #64748b; padding: 1.5rem;">
+          No user API access requests found.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = reqs.map(r => {
+    let statusBadge = '';
+    let actionsHtml = '';
+
+    if (r.status === 'pending') {
+      statusBadge = `<span class="status-badge" style="background:rgba(245,158,11,0.15); border-color:rgba(245,158,11,0.3); color:#f59e0b;">Pending</span>`;
+      actionsHtml = `
+        <button onclick="window.approveUserApiRequest('${r.id}')" class="btn btn-success btn-sm" style="margin-right: 0.3rem; padding: 0.35rem 0.75rem; font-size: 0.78rem; background: #10b981; border: none; color: white; cursor: pointer;">
+          ✅ Approve
+        </button>
+        <button onclick="window.rejectUserApiRequest('${r.id}')" class="btn btn-danger btn-sm" style="padding: 0.35rem 0.75rem; font-size: 0.78rem; cursor: pointer;">
+          ❌ Reject
+        </button>
+      `;
+    } else if (r.status === 'approved') {
+      statusBadge = `<span class="status-badge" style="background:rgba(16,185,129,0.15); border-color:rgba(16,185,129,0.3); color:#34d399;">Approved</span>`;
+      actionsHtml = `<span style="font-size: 0.78rem; color: #34d399;">Approved & Key Issued</span>`;
+    } else {
+      statusBadge = `<span class="status-badge" style="background:rgba(239,68,68,0.15); border-color:rgba(239,68,68,0.3); color:#ef4444;">Rejected</span>`;
+      actionsHtml = `<span style="font-size: 0.78rem; color: #ef4444;">Request Declined</span>`;
+    }
+
+    return `
+      <tr>
+        <td style="font-weight: 600; color: white;">
+          ${r.userName}
+          <div style="font-size: 0.75rem; color: #38bdf8; font-weight: normal;">${r.userEmail}</div>
+        </td>
+        <td style="color: #e2e8f0; font-weight: 600;">${r.apiType}</td>
+        <td style="color: #94a3b8; font-size: 0.8rem;">${r.requestedAt}</td>
+        <td>${statusBadge}</td>
+        <td>${r.approvedKey ? `<span class="key-code" style="font-size: 0.78rem; color: #38bdf8;">${r.approvedKey}</span>` : '<span style="color:#64748b; font-size:0.8rem;">None</span>'}</td>
+        <td style="text-align: right;">${actionsHtml}</td>
+      </tr>
+    `;
+  }).join('');
 }
 
 function renderAdminApiVault() {
@@ -722,7 +891,31 @@ function renderAdminUsersTable() {
   `).join('');
 }
 
-// Global Window Helpers for Admin Key Actions
+// Global Window Helpers for Admin Actions
+window.approveUserApiRequest = function(reqId) {
+  const reqs = getStoredApiRequests();
+  const target = reqs.find(r => r.id === reqId);
+  if (target) {
+    target.status = 'approved';
+    const typePrefix = target.apiType.toLowerCase().includes('jahwi') ? 'JAHWI' : (target.apiType.toLowerCase().includes('pos') ? 'POS' : 'API');
+    const randomHex = Array.from({length: 10}, () => Math.floor(Math.random()*16).toString(16).toUpperCase()).join('');
+    target.approvedKey = `UP_KEY_${typePrefix}_${randomHex}`;
+
+    saveStoredApiRequests(reqs);
+    showToast(`Approved API request for ${target.userEmail}! Issued key: ${target.approvedKey}`);
+  }
+};
+
+window.rejectUserApiRequest = function(reqId) {
+  const reqs = getStoredApiRequests();
+  const target = reqs.find(r => r.id === reqId);
+  if (target && confirm(`Reject API request for ${target.userEmail} (${target.apiType})?`)) {
+    target.status = 'rejected';
+    saveStoredApiRequests(reqs);
+    showToast(`Rejected API request for ${target.userEmail}.`);
+  }
+};
+
 window.copyAdminKey = function(keyId) {
   const keys = getStoredApiKeys();
   const target = keys.find(k => k.id === keyId);
