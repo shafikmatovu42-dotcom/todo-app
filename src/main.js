@@ -282,10 +282,23 @@ function initApiKeyCopy() {
 }
 
 /* ==========================================================================
-   8. Web Application State, Authentication & Admin API Key Vault
+   8. Web Application State, Authentication & Admin API Key Vault (Upstash Redis API Enabled)
    ========================================================================== */
 
-function getStoredUsers() {
+async function getStoredUsers() {
+  try {
+    const res = await fetch('/api/users');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        localStorage.setItem('up_app_users', JSON.stringify(data));
+        return data;
+      }
+    }
+  } catch (err) {
+    console.warn('Backend API unavailable, using local cache', err);
+  }
+
   const users = localStorage.getItem('up_app_users');
   if (users) return JSON.parse(users);
 
@@ -295,6 +308,19 @@ function getStoredUsers() {
   ];
   localStorage.setItem('up_app_users', JSON.stringify(defaultUsers));
   return defaultUsers;
+}
+
+async function saveStoredUsers(users) {
+  localStorage.setItem('up_app_users', JSON.stringify(users));
+  try {
+    await fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ users })
+    });
+  } catch (err) {
+    console.error('Failed to persist users to cloud backend:', err);
+  }
 }
 
 function getCurrentUser() {
@@ -312,7 +338,20 @@ function setCurrentUser(user) {
   syncPublicApiKeyDisplay();
 }
 
-function getStoredApiKeys() {
+async function getStoredApiKeys() {
+  try {
+    const res = await fetch('/api/keys');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        localStorage.setItem('up_api_keys', JSON.stringify(data));
+        return data;
+      }
+    }
+  } catch (err) {
+    console.warn('Backend API unavailable, using local cache', err);
+  }
+
   const keys = localStorage.getItem('up_api_keys');
   if (keys) return JSON.parse(keys);
 
@@ -323,14 +362,37 @@ function getStoredApiKeys() {
   return defaultKeys;
 }
 
-function saveStoredApiKeys(keys) {
+async function saveStoredApiKeys(keys) {
   localStorage.setItem('up_api_keys', JSON.stringify(keys));
-  renderAdminApiVault();
-  syncPublicApiKeyDisplay();
+  try {
+    await fetch('/api/keys', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ keys })
+    });
+  } catch (err) {
+    console.error('Failed to persist keys to cloud backend:', err);
+  }
+  await renderAdminApiVault();
+  await syncPublicApiKeyDisplay();
+  await populateCustomerApiOptions();
 }
 
 /* API Access Requests Storage & Logic */
-function getStoredApiRequests() {
+async function getStoredApiRequests() {
+  try {
+    const res = await fetch('/api/requests');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        localStorage.setItem('up_api_requests', JSON.stringify(data));
+        return data;
+      }
+    }
+  } catch (err) {
+    console.warn('Backend API unavailable, using local cache', err);
+  }
+
   const reqs = localStorage.getItem('up_api_requests');
   if (reqs) return JSON.parse(reqs);
 
@@ -360,18 +422,53 @@ function getStoredApiRequests() {
   return defaultReqs;
 }
 
-function saveStoredApiRequests(reqs) {
+async function saveStoredApiRequests(reqs) {
   localStorage.setItem('up_api_requests', JSON.stringify(reqs));
-  renderAdminApiRequestsTable();
-  renderCustomerRequestsList();
+  try {
+    await fetch('/api/requests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requests: reqs })
+    });
+  } catch (err) {
+    console.error('Failed to persist requests to cloud backend:', err);
+  }
+  await renderAdminApiRequestsTable();
+  await renderCustomerRequestsList();
 }
 
-function syncPublicApiKeyDisplay() {
+/* Dynamic Customer API Options Dropdown Sync */
+async function populateCustomerApiOptions() {
+  const selectEl = document.getElementById('cust-api-type-select');
+  if (!selectEl) return;
+
+  const keys = await getStoredApiKeys();
+  
+  let optionsHtml = '';
+  
+  if (keys && keys.length > 0) {
+    optionsHtml = keys.map(k => {
+      const label = `${k.name} (${k.provider})`;
+      return `<option value="${label}">${label} ${k.active ? '⚡ [Active]' : '[Configured]'}</option>`;
+    }).join('');
+  } else {
+    optionsHtml = `
+      <option value="JAHWI AI Gateway (Gemini Pro Engine)">JAHWI AI Gateway (Gemini Pro Engine)</option>
+      <option value="UPShop Enterprise POS Sync API">UPShop Enterprise POS Sync API</option>
+      <option value="BI & Data Analytics Gateway">BI & Data Analytics Gateway</option>
+      <option value="Custom Webhook & Integration Suite">Custom Webhook & Integration Suite</option>
+    `;
+  }
+
+  selectEl.innerHTML = optionsHtml;
+}
+
+async function syncPublicApiKeyDisplay() {
   const inputEl = document.getElementById('api-key-input');
   const statusText = document.getElementById('public-api-status-text');
   if (!inputEl) return;
 
-  const keys = getStoredApiKeys();
+  const keys = await getStoredApiKeys();
   const activeKey = keys.find(k => k.active);
 
   if (activeKey) {
@@ -473,12 +570,13 @@ function openAuthModal(mode = 'signin') {
   openModal('auth-modal');
 }
 
-function initAuthSystem() {
-  getStoredUsers();
-  getStoredApiKeys();
-  getStoredApiRequests();
+async function initAuthSystem() {
+  await getStoredUsers();
+  await getStoredApiKeys();
+  await getStoredApiRequests();
   updateNavAuthUI();
-  syncPublicApiKeyDisplay();
+  await syncPublicApiKeyDisplay();
+  await populateCustomerApiOptions();
 
   // Close buttons
   document.querySelectorAll('.modal-close').forEach(btn => {
@@ -488,10 +586,10 @@ function initAuthSystem() {
   // Open Vault button in #apikeys section
   const openVaultBtn = document.getElementById('open-admin-vault-btn');
   if (openVaultBtn) {
-    openVaultBtn.addEventListener('click', () => {
+    openVaultBtn.addEventListener('click', async () => {
       const user = getCurrentUser();
       if (user && user.role === 'admin') {
-        openAdminDashboard();
+        await openAdminDashboard();
       } else {
         showToast('Please Sign In as Admin to open the API Vault.');
         openAuthModal('signin');
@@ -544,13 +642,13 @@ function initAuthSystem() {
   // Auth Form Submit
   const authForm = document.getElementById('auth-form');
   if (authForm) {
-    authForm.addEventListener('submit', (e) => {
+    authForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('auth-email').value.trim();
       const password = document.getElementById('auth-password').value.trim();
       const fullname = document.getElementById('auth-fullname').value.trim();
 
-      const users = getStoredUsers();
+      const users = await getStoredUsers();
 
       if (currentAuthMode === 'signup') {
         const existing = users.find(u => u.email.toLowerCase() === email.toLowerCase());
@@ -569,14 +667,14 @@ function initAuthSystem() {
         };
 
         users.push(newUser);
-        localStorage.setItem('up_app_users', JSON.stringify(users));
+        await saveStoredUsers(users);
         setCurrentUser(newUser);
 
         showToast(`Welcome, ${newUser.name}! Account created as ${selectedRole.toUpperCase()}.`);
         closeModal('auth-modal');
 
-        if (newUser.role === 'admin') openAdminDashboard();
-        else openCustomerDashboard();
+        if (newUser.role === 'admin') await openAdminDashboard();
+        else await openCustomerDashboard();
       } else {
         // Sign In
         const matched = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
@@ -590,8 +688,8 @@ function initAuthSystem() {
         showToast(`Signed in successfully as ${matched.name || matched.email}`);
         closeModal('auth-modal');
 
-        if (matched.role === 'admin') openAdminDashboard();
-        else openCustomerDashboard();
+        if (matched.role === 'admin') await openAdminDashboard();
+        else await openCustomerDashboard();
       }
     });
   }
@@ -619,7 +717,7 @@ function initAuthSystem() {
   // Admin Add Key Form
   const addKeyForm = document.getElementById('admin-add-key-form');
   if (addKeyForm) {
-    addKeyForm.addEventListener('submit', (e) => {
+    addKeyForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const serviceName = document.getElementById('key-service-name').value.trim();
       const provider = document.getElementById('key-provider').value.trim();
@@ -630,7 +728,7 @@ function initAuthSystem() {
         return;
       }
 
-      const keys = getStoredApiKeys();
+      const keys = await getStoredApiKeys();
       const newKey = {
         id: 'k_' + Date.now(),
         name: serviceName,
@@ -642,7 +740,7 @@ function initAuthSystem() {
 
       keys.forEach(k => k.active = false);
       keys.unshift(newKey);
-      saveStoredApiKeys(keys);
+      await saveStoredApiKeys(keys);
 
       showToast(`API Key "${serviceName}" added to Admin Vault and set as Active!`);
       addKeyForm.reset();
@@ -652,7 +750,7 @@ function initAuthSystem() {
   // Customer Request API Access Form Submit
   const custReqForm = document.getElementById('cust-request-api-form');
   if (custReqForm) {
-    custReqForm.addEventListener('submit', (e) => {
+    custReqForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const user = getCurrentUser();
       if (!user) {
@@ -663,7 +761,7 @@ function initAuthSystem() {
       const apiTypeSelect = document.getElementById('cust-api-type-select');
       const selectedType = apiTypeSelect ? apiTypeSelect.value : 'Custom Webhook API';
 
-      const reqs = getStoredApiRequests();
+      const reqs = await getStoredApiRequests();
 
       // Check if user already requested this exact API type and it is pending
       const existingPending = reqs.find(r => (r.userId === user.id || r.userEmail === user.email) && r.apiType === selectedType && r.status === 'pending');
@@ -686,30 +784,32 @@ function initAuthSystem() {
       };
 
       reqs.unshift(newReq);
-      saveStoredApiRequests(reqs);
+      await saveStoredApiRequests(reqs);
 
       showToast(`Request for "${selectedType}" submitted successfully! Awaiting Admin Approval.`);
     });
   }
 }
 
-function openCustomerDashboard() {
+async function openCustomerDashboard() {
   const user = getCurrentUser();
   if (!user) return;
 
   document.getElementById('cust-dash-name').textContent = user.name || 'Customer Portal';
   document.getElementById('cust-dash-email').textContent = user.email;
 
-  renderCustomerRequestsList();
+  await populateCustomerApiOptions();
+  await renderCustomerRequestsList();
   openModal('customer-dashboard-modal');
 }
 
-function renderCustomerRequestsList() {
+async function renderCustomerRequestsList() {
   const user = getCurrentUser();
   const keysList = document.getElementById('cust-keys-list');
   if (!keysList || !user) return;
 
-  const reqs = getStoredApiRequests().filter(r => r.userId === user.id || r.userEmail === user.email);
+  const allReqs = await getStoredApiRequests();
+  const reqs = allReqs.filter(r => r.userId === user.id || r.userEmail === user.email);
 
   if (reqs.length === 0) {
     keysList.innerHTML = `
@@ -755,7 +855,7 @@ function renderCustomerRequestsList() {
   }).join('');
 }
 
-function openAdminDashboard() {
+async function openAdminDashboard() {
   const user = getCurrentUser();
   if (!user || user.role !== 'admin') {
     showToast('Admin privilege required!');
@@ -763,19 +863,19 @@ function openAdminDashboard() {
   }
 
   document.getElementById('admin-dash-email').textContent = user.email;
-  renderAdminApiRequestsTable();
-  renderAdminApiVault();
-  renderAdminUsersTable();
+  await renderAdminApiRequestsTable();
+  await renderAdminApiVault();
+  await renderAdminUsersTable();
 
   openModal('admin-dashboard-modal');
 }
 
-function renderAdminApiRequestsTable() {
+async function renderAdminApiRequestsTable() {
   const tbody = document.getElementById('admin-api-requests-tbody');
   const countEl = document.getElementById('admin-pending-req-count');
   if (!tbody) return;
 
-  const reqs = getStoredApiRequests();
+  const reqs = await getStoredApiRequests();
   const pendingCount = reqs.filter(r => r.status === 'pending').length;
 
   if (countEl) countEl.textContent = `${pendingCount} Pending Approval`;
@@ -829,12 +929,12 @@ function renderAdminApiRequestsTable() {
   }).join('');
 }
 
-function renderAdminApiVault() {
+async function renderAdminApiVault() {
   const tbody = document.getElementById('admin-api-keys-tbody');
   const countEl = document.getElementById('api-keys-count');
   if (!tbody) return;
 
-  const keys = getStoredApiKeys();
+  const keys = await getStoredApiKeys();
 
   if (countEl) countEl.textContent = `${keys.length} Key(s) Configured`;
 
@@ -871,11 +971,11 @@ function renderAdminApiVault() {
   `).join('');
 }
 
-function renderAdminUsersTable() {
+async function renderAdminUsersTable() {
   const tbody = document.getElementById('admin-users-tbody');
   if (!tbody) return;
 
-  const users = getStoredUsers();
+  const users = await getStoredUsers();
 
   tbody.innerHTML = users.map(u => `
     <tr>
@@ -892,8 +992,8 @@ function renderAdminUsersTable() {
 }
 
 // Global Window Helpers for Admin Actions
-window.approveUserApiRequest = function(reqId) {
-  const reqs = getStoredApiRequests();
+window.approveUserApiRequest = async function(reqId) {
+  const reqs = await getStoredApiRequests();
   const target = reqs.find(r => r.id === reqId);
   if (target) {
     target.status = 'approved';
@@ -901,23 +1001,23 @@ window.approveUserApiRequest = function(reqId) {
     const randomHex = Array.from({length: 10}, () => Math.floor(Math.random()*16).toString(16).toUpperCase()).join('');
     target.approvedKey = `UP_KEY_${typePrefix}_${randomHex}`;
 
-    saveStoredApiRequests(reqs);
+    await saveStoredApiRequests(reqs);
     showToast(`Approved API request for ${target.userEmail}! Issued key: ${target.approvedKey}`);
   }
 };
 
-window.rejectUserApiRequest = function(reqId) {
-  const reqs = getStoredApiRequests();
+window.rejectUserApiRequest = async function(reqId) {
+  const reqs = await getStoredApiRequests();
   const target = reqs.find(r => r.id === reqId);
   if (target && confirm(`Reject API request for ${target.userEmail} (${target.apiType})?`)) {
     target.status = 'rejected';
-    saveStoredApiRequests(reqs);
+    await saveStoredApiRequests(reqs);
     showToast(`Rejected API request for ${target.userEmail}.`);
   }
 };
 
-window.copyAdminKey = function(keyId) {
-  const keys = getStoredApiKeys();
+window.copyAdminKey = async function(keyId) {
+  const keys = await getStoredApiKeys();
   const target = keys.find(k => k.id === keyId);
   if (target) {
     navigator.clipboard.writeText(target.value).then(() => {
@@ -926,22 +1026,22 @@ window.copyAdminKey = function(keyId) {
   }
 };
 
-window.toggleAdminKey = function(keyId) {
-  const keys = getStoredApiKeys();
+window.toggleAdminKey = async function(keyId) {
+  const keys = await getStoredApiKeys();
   const target = keys.find(k => k.id === keyId);
   if (target) {
     target.active = !target.active;
-    saveStoredApiKeys(keys);
+    await saveStoredApiKeys(keys);
     showToast(`${target.name} key set to ${target.active ? 'ACTIVE' : 'INACTIVE'}.`);
   }
 };
 
-window.deleteAdminKey = function(keyId) {
-  let keys = getStoredApiKeys();
+window.deleteAdminKey = async function(keyId) {
+  let keys = await getStoredApiKeys();
   const target = keys.find(k => k.id === keyId);
   if (target && confirm(`Delete API key "${target.name}"?`)) {
     keys = keys.filter(k => k.id !== keyId);
-    saveStoredApiKeys(keys);
+    await saveStoredApiKeys(keys);
     showToast(`API Key "${target.name}" deleted.`);
   }
 };
